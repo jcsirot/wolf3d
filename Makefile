@@ -59,7 +59,7 @@ $(OBJ_PATH):
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER_PATH) -I $(LIB_PATH)includes/ -I $(MLX_PATH)
-	@echo "\033[1;34mCompilation of \033[36m$(notdir $<)\033[0m \033[32mdone\033[0m"
+	@echo "\033[1;34mCompilation of \033[36m$(notdir $<)\033[0m \033[32mdone\033[1;0m"
 
 $(LIB):
 	@make -C $(LIB_PATH)
@@ -69,7 +69,7 @@ $(LIB):
 
 $(NAME): $(LIB) $(OBJ_PATH) $(OBJ_EXEC) $(HEADER_PATH)
 	@$(CC) $(FLAGS) $(OBJ_EXEC) $(LIB) -o $@ -I $(HEADER_PATH) $(MLX_FILE)
-	@echo "\033[1;32mwolf3d\t\t\033[0;32m[Compilation done]\033[0;32m"
+	@echo "\033[1;32mwolf3d\t\t\033[0;32m[Compilation done]\033[1;0m"
 
 sdl:
 	@if [ -d "./srcs/SDL2-2.0.9/lib/" ]; then \
@@ -91,12 +91,12 @@ fi
 clean:
 	@make clean -C libft/
 	@/bin/rm -rf $(OBJ_PATH)
-	@echo "\033[1;32mwolf3d\t\t\033[1;31m[.o removed]"
+	@echo "\033[1;32mwolf3d\t\t\033[1;31m[.o removed]\033[1;0m"
 
 fclean: clean
 	@make fclean -C libft
 	@/bin/rm -rf $(NAME)
-	@echo "\033[1;32mwolf3d\t\t\033[1;31m[Executable removed]"
+	@echo "\033[1;32mwolf3d\t\t\033[1;31m[Executable removed]\033[1;0m"
 
 re: fclean all
 
