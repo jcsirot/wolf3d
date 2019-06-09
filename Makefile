@@ -14,6 +14,8 @@
 
 NAME = wolf3d
 
+SDL_MAIN_DOWNLOAD = https://www.libsdl.org/release/SDL2-2.0.9.tar.gz
+
 	# Flags
 
 FLAGS = -Wall -Wextra -Werror
@@ -50,13 +52,13 @@ OBJ_FILES = $(SRC_FILES:.c=.o)
 
 	# Rules
 
-all: $(NAME)
+all: sdl $(NAME)
 
 $(OBJ_PATH):
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER_PATH) -I $(LIB_PATH)includes/ -I $(MLX_PATH)SDL2/
+	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER_PATH) -I $(LIB_PATH)includes/ -I $(MLX_PATH)
 	@echo "\033[1;34mCompilation of \033[36m$(notdir $<)\033[0m \033[32mdone\033[0m"
 
 $(LIB):
@@ -66,8 +68,25 @@ $(LIB):
 #	@make -C ./srcs/SDL2-2.0.9/build/
 
 $(NAME): $(LIB) $(OBJ_PATH) $(OBJ_EXEC) $(HEADER_PATH)
-	@$(CC) $(FLAGS) $(OBJ_EXEC) $(LIB) $(MLX) -o $@ -I $(HEADER_PATH)
+	@$(CC) $(FLAGS) $(OBJ_EXEC) $(LIB) -o $@ -I $(HEADER_PATH) $(MLX_FILE)
 	@echo "\033[1;32mwolf3d\t\t\033[0;32m[Compilation done]\033[0;32m"
+
+sdl:
+	@if [ -d "./srcs/SDL2-2.0.9/lib/" ]; then \
+		echo "SDL ==> Nothing to be done"; \
+	else \
+		echo "SDL ==> Downloading SDL" && \
+		curl -s $(SDL_MAIN_DOWNLOAD) -O && \
+		mv SDL2-2.0.9.tar.gz srcs && \
+		cd ./srcs && \
+		echo "SDL ==> Compilation SDL main" && \
+		tar -xf SDL2-2.0.9.tar.gz && \
+		cd SDL2-2.0.9 && \
+		./configure --prefix=$(shell pwd)/srcs/SDL2-2.0.9 > /dev/null && \
+		$(MAKE) > /dev/null &&  \
+		$(MAKE) install > /dev/null && \
+		echo "SDL ==> DONE"; \
+fi
 
 clean:
 	@make clean -C libft/
