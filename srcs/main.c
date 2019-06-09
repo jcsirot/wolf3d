@@ -39,7 +39,7 @@ int		main(int ac, char **av)
 			SDL_UpdateWindowSurface(window);
 		}
 	}
-//	SDL_UpdateWindowSurface(window);
-//	SDL_Delay(10000);
+	SDL_UpdateWindowSurface(window);
+	SDL_Delay(10000);
 	return (0);
 }

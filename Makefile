@@ -30,17 +30,18 @@ HEADER_PATH = ./includes/
 SRC_PATH = ./srcs/
 OBJ_PATH = ./objs/
 LIB_PATH = ./libft/
-MLX_PATH = /Users/$(ID_UN)/.brew/Cellar/sdl2/$(SDL_NUM)/include/SDL2
+MLX_PATH = ./srcs/SDL2-2.0.9/include/
 
 	# Files
 
 SRC_FILES = $(shell ls $(SRC_PATH) | grep -E ".+\.c")
 
-MLX_FILE = -L /Users/$(ID_UN)/.brew/lib/ -lSDL2
+#MLX_FILE = -L /Users/$(ID_UN)/.brew/lib/ -lSDL2
 
-MLX = $(addprefix -I, $(MLX_PATH))
+#MLX = $(addprefix -I, $(MLX_PATH))
 
 LIB_FILE = libft.a
+MLX_FILE = -L ./srcs/SDL2-2.0.9/lib -lSDL2
 
 LIB = $(addprefix $(LIB_PATH), $(LIB_FILE))
 
@@ -55,17 +56,17 @@ $(OBJ_PATH):
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER_PATH) -I $(LIB_PATH)includes/ $(MLX)
+	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADER_PATH) -I $(LIB_PATH)includes/ -I $(MLX_PATH)SDL2/
 	@echo "\033[1;34mCompilation of \033[36m$(notdir $<)\033[0m \033[32mdone\033[0m"
 
 $(LIB):
 	@make -C $(LIB_PATH)
 
 #$(MLX):
-#	@make -C $(MLX_PATH)
+#	@make -C ./srcs/SDL2-2.0.9/build/
 
 $(NAME): $(LIB) $(OBJ_PATH) $(OBJ_EXEC) $(HEADER_PATH)
-	@$(CC) $(FLAGS) $(OBJ_EXEC) $(LIB) -o $@ -I $(HEADER_PATH) $(MLX_FILE)
+	@$(CC) $(FLAGS) $(OBJ_EXEC) $(LIB) $(MLX) -o $@ -I $(HEADER_PATH)
 	@echo "\033[1;32mwolf3d\t\t\033[0;32m[Compilation done]\033[0;32m"
 
 clean:
